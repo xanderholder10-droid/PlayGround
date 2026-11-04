@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07090c" />
+  <title>TUBE FC — Own the Street</title>
+  <meta name="description" content="TUBE FC is a fast 2v2 street football game. Chain tricks, unlock fits, open crates and climb the ranked ladder." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <div id="app">
+    <header class="topbar" id="topbar">
+      <button class="brand" data-nav="home" aria-label="TUBE FC home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M20 5v30M5 20h30M9.4 9.4l21.2 21.2M30.6 9.4 9.4 30.6" stroke="currentColor" stroke-width="1.2" opacity=".45"/><path d="M20 10.5 28.5 16l-3.2 9.8h-9.6L12.5 16Z" fill="currentColor"/><path d="M20 5v5.5M8.9 17.2 12.5 16M31.1 17.2 28.5 16M17.1 31.8 15.7 25.8M22.9 31.8 24.3 25.8" stroke="currentColor" stroke-width="1.2"/></svg>
+        </span>
+        <span class="brand-word">TUBE<span>FC</span></span>
+      </button>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link is-active" data-nav="home">PLAY</button>
+        <button class="nav-link" data-nav="locker">LOCKER</button>
+        <button class="nav-link" data-nav="shop">SHOP</button>
+        <button class="nav-link" data-nav="crates">CRATES</button>
+      </nav>
+
+      <div class="topbar-right">
+        <div class="rank-pill" data-nav="ranked" title="Your ranked division">
+          <span class="rank-gem" id="rankGem">◆</span>
+          <span><b id="rankName">GOLD II</b><small id="rankRp">1,240 RP</small></span>
+        </div>
+        <button class="tube-pill" data-nav="shop" title="Tubes are earned by playing, scoring and chaining tricks">
+          <span class="tube-icon">T</span>
+          <b id="tubeBalance">1,500</b>
+          <span class="pill-plus">+</span>
+        </button>
+        <button class="icon-btn sound-btn" id="soundToggle" aria-label="Toggle sound">
+          <svg class="sound-on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm13 -2a7 7 0 0 1 0 10M19.5 4.5a11 11 0 0 1 0 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg class="sound-off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm13 1 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <button class="profile-chip" data-nav="locker" aria-label="Open locker">
+          <span class="profile-dot"></span>
+          <span class="profile-copy"><b>STREETBALLER</b><small>LVL 14</small></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="screen-home" class="screen home is-active">
+      <div class="home-bg" aria-hidden="true">
+        <div class="bg-orb orb-a"></div>
+        <div class="bg-orb orb-b"></div>
+        <div class="pitch-wire"></div>
+        <div class="big-watermark">TUBE</div>
+        <div class="floating-ball ball-a"></div>
+        <div class="floating-ball ball-b"></div>
+        <div class="speed-line sl-a"></div>
+        <div class="speed-line sl-b"></div>
+        <div class="speed-line sl-c"></div>
+      </div>
+
+      <div class="home-wrap">
+        <div class="home-main">
+          <section class="hero-block">
+            <div class="eyebrow"><span class="live-dot"></span> SEASON 01 <span class="eyebrow-sep"></span> NEON LEAGUE</div>
+            <h1 class="hero-title">OWN THE<br><span>STREET.</span></h1>
+            <p class="hero-copy">Two ballers. One rock. Zero rules but the cage. Chain nasty tricks, break ankles and climb the world ladder in the loudest 2v2 street league on the block.</p>
+            <div class="hero-actions">
+              <button class="btn btn-lime btn-lg" data-mode="normal">
+                <span class="btn-kicker">2V2 MATCH</span>
+                QUICK MATCH
+                <span class="btn-arrow">↗</span>
+              </button>
+              <button class="btn btn-ghost btn-lg" data-action="how">
+                <span class="btn-kicker">NEW BALLER?</span>
+                HOW TO PLAY
+              </button>
+            </div>
+            <div class="hero-meta">
+              <div><b>32</b><span>UNLOCKS</span></div>
+              <div><b>6</b><span>DIVISIONS</span></div>
+              <div><b>∞</b><span>COMBOS</span></div>
+              <div class="online-now"><i></i> 12,804 BALLERS LIVE</div>
+            </div>
+          </section>
+
+          <section class="mode-strip" aria-label="Game modes">
+            <button class="mode-card mode-ranked" data-mode="ranked">
+              <span class="mode-art" aria-hidden="true">♛</span>
+              <span class="mode-tag">RANKED</span>
+              <strong>CLIMB THE LADDER</strong>
+              <small id="rankedCardMeta">GOLD II · 1,240 RP</small>
+              <span class="mode-go">↗</span>
+            </button>
+            <button class="mode-card mode-normal is-featured" data-mode="normal">
+              <span class="mode-art" aria-hidden="true">⚽</span>
+              <span class="mode-tag">NORMAL <em>LIVE</em></span>
+              <strong>QUICK MATCH</strong>
+              <small>2V2 · 90 SECONDS</small>
+              <span class="mode-go">↗</span>
+            </button>
+            <button class="mode-card mode-free" data-mode="freestyle">
+              <span class="mode-art" aria-hidden="true">✦</span>
+              <span class="mode-tag">FREESTYLE</span>
+              <strong>STYLE SESSION</strong>
+              <small>NO DEFENDERS · MAX COMBOS</small>
+              <span class="mode-go">↗</span>
+            </button>
+          </section>
+        </div>
+
+        <aside class="squad-column">
+          <section class="squad-panel">
+            <div class="panel-head">
+              <div>
+                <span class="section-kicker">YOUR CREW</span>
+                <h2>ACTIVE SQUAD</h2>
+              </div>
+              <button class="mini-link" data-nav="locker">CUSTOMIZE ↗</button>
+            </div>
+            <div class="squad-cards" id="homeSquad"></div>
+            <div class="squad-footer">
+              <div class="synergy">
+                <span class="synergy-icon">⚡</span>
+                <div><b>STREET CHEMISTRY</b><small>Auto-switch to the ball carrier. Press <kbd>Q</kbd> off-ball.</small></div>
+              </div>
+              <div class="ovr"><small>TEAM OVR</small><b id="teamOvr">86</b></div>
+            </div>
+          </section>
+
+          <button class="drop-card" data-nav="crates">
+            <div class="drop-glow"></div>
+            <div class="drop-copy">
+              <span class="section-kicker">LIMITED DROP</span>
+              <strong>STREET CRATE</strong>
+              <small>NEW FITS · BALL SKINS · HATS</small>
+              <span class="drop-cta">OPEN FOR 350 <span class="mini-tube">T</span></span>
+            </div>
+            <div class="crate-art css-crate" aria-hidden="true">
+              <div class="crate-lid"></div><div class="crate-face"><span>T</span><i></i><i></i></div><div class="crate-glow"></div>
+            </div>
+          </button>
+        </aside>
+      </div>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <span>TRICK OF THE DAY · NOVA · SOMBRERO + RABONA</span><i>✦</i>
+          <span>SEASON REWARD · GOLD CRATE AT GOLD I</span><i>✦</i>
+          <span>NEW BALL SKIN · COSMIC ROCK</span><i>✦</i>
+          <span>DAILY DROP RESETS IN 08:42</span><i>✦</i>
+          <span>TRICK OF THE DAY · NOVA · SOMBRERO + RABONA</span><i>✦</i>
+          <span>SEASON REWARD · GOLD CRATE AT GOLD I</span><i>✦</i>
+          <span>NEW BALL SKIN · COSMIC ROCK</span><i>✦</i>
+          <span>DAILY DROP RESETS IN 08:42</span><i>✦</i>
+        </div>
+      </div>
+    </main>
+
+    <section id="screen-locker" class="screen page-screen">
+      <div class="page-wrap">
+        <div class="page-top">
+          <button class="back-btn" data-nav="home">← HUB</button>
+          <div class="page-heading">
+            <span class="section-kicker">CUSTOMIZATION</span>
+            <h1>THE LOCKER</h1>
+          </div>
+          <div class="page-actions">
+            <div class="inline-tubes"><span class="tube-icon">T</span><b class="js-tubes">1,500</b></div>
+            <button class="btn btn-small btn-ghost" data-nav="shop">GO TO SHOP ↗</button>
+          </div>
+        </div>
+
+        <div class="locker-layout">
+          <aside class="locker-preview-panel">
+            <div class="char-switch" id="charSwitch"></div>
+            <div class="avatar-stage" id="lockerAvatar"></div>
+            <div class="preview-meta">
+              <div><span class="section-kicker">SELECTED BALLER</span><h2 id="lockerCharName">NOVA</h2><small id="lockerCharRole">WINGER · #7</small></div>
+              <div class="preview-ovr"><small>OVR</small><b id="lockerOvr">87</b></div>
+            </div>
+            <div class="stat-bars" id="lockerStats"></div>
+            <div class="equipped-mini" id="equippedMini"></div>
+          </aside>
+
+          <div class="locker-main">
+            <div class="inventory-head">
+              <div class="inv-tabs" id="lockerTabs">
+                <button class="inv-tab is-active" data-inv="kit">KITS</button>
+                <button class="inv-tab" data-inv="hat">HATS</button>
+                <button class="inv-tab" data-inv="acc">ACCESSORIES</button>
+                <button class="inv-tab" data-inv="ball">BALL SKINS</button>
+                <button class="inv-tab" data-inv="color">COLORS</button>
+              </div>
+              <span class="inv-count" id="invCount">7 ITEMS</span>
+            </div>
+            <div class="inventory-grid" id="lockerGrid"></div>
+            <div class="locker-tip"><span>✦</span> Everything you own can be equipped on either baller. Locked gear is available in the shop or from crates.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-shop" class="screen page-screen">
+      <div class="page-wrap">
+        <div class="page-top">
+          <button class="back-btn" data-nav="home">← HUB</button>
+          <div class="page-heading">
+            <span class="section-kicker">FRESH GOODS</span>
+            <h1>THE SHOP</h1>
+          </div>
+          <div class="page-actions">
+            <div class="inline-tubes"><span class="tube-icon">T</span><b class="js-tubes">1,500</b></div>
+            <button class="btn btn-small btn-lime" data-nav="crates">GET CRATES ↗</button>
+          </div>
+        </div>
+
+        <div class="shop-feature">
+          <div class="feature-copy">
+            <span class="drop-label">FEATURED DROP</span>
+            <h2>NEON<br>AFTERDARK</h2>
+            <p>Glow-up the cage. Limited kits, bucket hats and the Cosmic Rock.</p>
+            <button class="btn btn-lime" data-shop-filter="all">BROWSE THE DROP <span>↗</span></button>
+          </div>
+          <div class="feature-art">
+            <div class="feature-rings"></div>
+            <div class="feature-star">✦</div>
+            <div class="feature-ball" id="featureBall"></div>
+            <div class="feature-label">SEASON 01 / 24 ITEMS</div>
+          </div>
+        </div>
+
+        <div class="shop-toolbar">
+          <div class="shop-filters" id="shopFilters">
+            <button class="filter is-active" data-filter="all">ALL</button>
+            <button class="filter" data-filter="kit">KITS</button>
+            <button class="filter" data-filter="hat">HATS</button>
+            <button class="filter" data-filter="acc">ACCESSORIES</button>
+            <button class="filter" data-filter="ball">BALLS</button>
+          </div>
+          <span class="shop-note">EARN TUBES IN EVERY MATCH · NO PAY-TO-WIN</span>
+        </div>
+        <div class="shop-grid" id="shopGrid"></div>
+      </div>
+    </section>
+
+    <section id="screen-crates" class="screen page-screen">
+      <div class="page-wrap">
+        <div class="page-top">
+          <button class="back-btn" data-nav="home">← HUB</button>
+          <div class="page-heading">
+            <span class="section-kicker">RISK IT FOR THE FITS</span>
+            <h1>THE CRATE ROOM</h1>
+          </div>
+          <div class="page-actions">
+            <div class="inline-tubes"><span class="tube-icon">T</span><b class="js-tubes">1,500</b></div>
+            <button class="btn btn-small btn-ghost" data-action="daily">FREE DAILY</button>
+          </div>
+        </div>
+        <div class="crate-grid">
+          <article class="crate-card crate-street">
+            <div class="crate-rarity">COMMON → RARE</div>
+            <div class="crate-showcase"><div class="css-crate big"><div class="crate-lid"></div><div class="crate-face"><span>T</span><i></i><i></i></div><div class="crate-glow"></div></div></div>
+            <h2>STREET CRATE</h2>
+            <p>Everyday heat for the block. One unlock from the street collection.</p>
+            <div class="crate-odds"><span>RARE <b>24%</b></span><span>EPIC <b>6%</b></span></div>
+            <button class="btn btn-lime btn-wide" data-crate="street">OPEN · 350 <span class="mini-tube">T</span></button>
+          </article>
+          <article class="crate-card crate-elite is-hot">
+            <div class="hot-badge">BEST VALUE</div>
+            <div class="crate-rarity">RARE → EPIC</div>
+            <div class="crate-showcase"><div class="css-crate big elite"><div class="crate-lid"></div><div class="crate-face"><span>T</span><i></i><i></i></div><div class="crate-glow"></div></div></div>
+            <h2>ELITE CRATE</h2>
+            <p>Guaranteed rare or better. Built for ballers who need the whole fit.</p>
+            <div class="crate-odds"><span>RARE <b>68%</b></span><span>EPIC <b>32%</b></span></div>
+            <button class="btn btn-lime btn-wide" data-crate="elite">OPEN · 750 <span class="mini-tube">T</span></button>
+          </article>
+          <article class="crate-card crate-legend">
+            <div class="crate-rarity">EPIC → LEGENDARY</div>
+            <div class="crate-showcase"><div class="css-crate big legend"><div class="crate-lid"></div><div class="crate-face"><span>T</span><i></i><i></i></div><div class="crate-glow"></div></div></div>
+            <h2>LEGEND CRATE</h2>
+            <p>Crown jewels, halos and 24K everything. Limited to the loudest fits.</p>
+            <div class="crate-odds"><span>EPIC <b>70%</b></span><span>LEGEND <b>30%</b></span></div>
+            <button class="btn btn-lime btn-wide" data-crate="legend">OPEN · 1,400 <span class="mini-tube">T</span></button>
+          </article>
+        </div>
+        <div class="crate-info">
+          <b>NO DUPES. NO DUDES.</b>
+          <span>Crates only drop gear you do not own. If you own the whole pool, you get Tubes back.</span>
+          <span class="daily-state" id="dailyState">DAILY DROP READY</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-game" class="screen game-screen">
+      <canvas id="gameCanvas"></canvas>
+      <div class="game-vignette" aria-hidden="true"></div>
+
+      <div class="game-hud" id="gameHud">
+        <div class="hud-top">
+          <div class="hud-left">
+            <span class="hud-mode" id="hudMode">NORMAL</span>
+            <span class="hud-rule">CAGE RULES · 2V2</span>
+          </div>
+          <div class="scorebug">
+            <div class="team-block home">
+              <div class="team-badge"><span>T</span></div>
+              <div class="team-names"><b>YOUR CREW</b><small>NOVA + REX</small></div>
+              <strong id="homeScore">0</strong>
+            </div>
+            <div class="match-clock"><b id="matchClock">01:30</b><small id="clockLabel">1ST HALF</small></div>
+            <div class="team-block away">
+              <strong id="awayScore">0</strong>
+              <div class="team-names"><b>RIVALS</b><small>NEON KINGS</small></div>
+              <div class="team-badge away"><span>K</span></div>
+            </div>
+          </div>
+          <div class="hud-right">
+            <button class="hud-icon" id="muteGame" aria-label="Mute">♪</button>
+            <button class="hud-icon" id="pauseGame" aria-label="Pause">Ⅱ</button>
+          </div>
+        </div>
+
+        <div class="hud-bottom">
+          <div class="control-legend">
+            <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE</span>
+            <span><kbd>SPACE</kbd> HOLD TO SHOOT</span>
+            <span><kbd>E</kbd> PASS</span>
+            <span><kbd>SHIFT</kbd> SPRINT</span>
+            <span><kbd>T</kbd> TRICK</span>
+            <span><kbd>Q</kbd> SWITCH</span>
+            <span><kbd>X</kbd> TACKLE</span>
+          </div>
+          <div class="style-hud" id="styleHud">
+            <div class="combo-orb"><span>×</span><b id="comboValue">0</b></div>
+            <div class="combo-copy"><small>STYLE COMBO</small><div class="combo-bar"><i id="comboBar"></i></div></div>
+            <div class="combo-points"><b id="stylePoints">0</b><small>STYLE PTS</small></div>
+          </div>
+        </div>
+
+        <div class="charge-wrap" id="chargeWrap">
+          <div class="charge-label"><span id="chargeKind">SHOT</span><b id="chargePct">0%</b></div>
+          <div class="charge-track"><i id="chargeFill"></i><span class="power-mark"></span></div>
+          <small>RELEASE TO STRIKE · AIM WITH MOUSE</small>
+        </div>
+
+        <div class="trick-hud" id="trickHud">
+          <div class="trick-title"><span>TRICK SEQUENCE</span><b id="trickName">ELASTICO</b></div>
+          <div class="trick-keys" id="trickKeys"></div>
+          <div class="trick-timer"><i id="trickTimerBar"></i></div>
+        </div>
+
+        <div class="setpiece-banner" id="setpieceBanner"><span id="setpieceText">THROW-IN</span></div>
+      </div>
+
+      <div class="countdown" id="countdown">
+        <span id="countdownKicker">RANKED MATCH</span>
+        <b id="countdownNumber">3</b>
+        <small>NOVA + REX VS NEON KINGS</small>
+      </div>
+
+      <div class="goal-banner" id="goalBanner">
+        <div class="goal-flash"></div>
+        <span id="goalKicker">ABSOLUTE SCENES</span>
+        <h1>GOAL<span>!</span></h1>
+        <div class="goal-scorer"><b id="goalScorer">NOVA</b><span id="goalDetail">TOP BINS · 42'</span></div>
+        <div class="goal-style" id="goalStyle">+250 STYLE</div>
+      </div>
+
+      <div class="game-overlay" id="pauseOverlay">
+        <div class="overlay-card pause-card">
+          <span class="section-kicker">TAKE A BREATH</span>
+          <h2>PAUSED</h2>
+          <div class="pause-controls">
+            <div><kbd>WASD</kbd><span>Move</span></div>
+            <div><kbd>SPACE</kbd><span>Charge shot</span></div>
+            <div><kbd>E</kbd><span>Pass</span></div>
+            <div><kbd>SHIFT</kbd><span>Sprint</span></div>
+            <div><kbd>T</kbd><span>Start trick</span></div>
+            <div><kbd>ARROWS</kbd><span>Enter trick sequence</span></div>
+            <div><kbd>Q</kbd><span>Switch baller</span></div>
+            <div><kbd>X</kbd><span>Slide tackle</span></div>
+          </div>
+          <div class="overlay-actions">
+            <button class="btn btn-lime" id="resumeGame">RESUME</button>
+            <button class="btn btn-ghost" id="quitGame">QUIT TO HUB</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-overlay" id="resultOverlay">
+        <div class="overlay-card result-card">
+          <span class="section-kicker" id="resultKicker">FULL TIME</span>
+          <h2 id="resultTitle">W</h2>
+          <div class="result-score"><span id="resultHomeName">YOUR CREW</span><b id="resultScore">3 — 2</b><span>NEON KINGS</span></div>
+          <div class="result-rewards" id="resultRewards"></div>
+          <div class="result-stats" id="resultStats"></div>
+          <div class="overlay-actions">
+            <button class="btn btn-lime" id="rematchBtn">RUN IT BACK</button>
+            <button class="btn btn-ghost" id="homeBtn">BACK TO HUB</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <div class="game-overlay" id="crateOverlay">
+    <div class="overlay-card crate-open-card">
+      <span class="section-kicker" id="crateOpenKicker">STREET CRATE</span>
+      <h2 id="crateOpenTitle">UNLOCKING</h2>
+      <div class="open-reel" id="openReel"></div>
+      <div class="open-result" id="openResult"></div>
+      <div class="overlay-actions">
+        <button class="btn btn-lime" id="crateDone">ADD TO LOCKER</button>
+        <button class="btn btn-ghost" id="crateOpenMore">OPEN ANOTHER</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-root" id="modalRoot"></div>
+  <div class="toast-root" id="toastRoot" aria-live="polite"></div>
+
+  <script src="game.js"></script>
+  <script src="engine.js"></script>
+</body>
+</html>
