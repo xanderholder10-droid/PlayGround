@@ -106,7 +106,7 @@ function createGame(mode) {
     keys: new Set(), trick: null, controlledId: null, selectedId: 'home_1',
     particles: [], floaters: [], trail: [], shake: 0, flash: 0, flashColor: '#c9ff3f',
     restart: null, setpiece: null, active: true, paused: false,
-    introDone: false, timeScale: 1, possessionFlash: 0,
+    introDone: false, timeScale: 1, possessionFlash: 0, autoDefenderFor: null,
     goalBy: null, kickoffSide: 'home', lastTrickName: '',
     stats: { shots: 0, passes: 0, tackles: 0, saves: 0, tricks: 0 }
   };
@@ -145,6 +145,7 @@ function resetKickoff(g, side) {
     b.lastTouch = taker;
   }
   g.trick = null;
+  g.autoDefenderFor = null;
   g.combo = 0; g.comboTimer = 0;
   setControlled(g, home[0]);
 }
@@ -180,17 +181,21 @@ function targetGoalX(side) { return side === 'home' ? FIELD.right : FIELD.x; }
 
 function updateControlled(g) {
   const b = g.ball;
-  if (b.owner && b.owner.side === 'home' && !b.owner.isKeeper) {
-    if (g.controlledId !== b.owner.id) setControlled(g, b.owner);
+  if (b.owner && b.owner.side === 'home') {
+    g.autoDefenderFor = null;
+    if (!b.owner.isKeeper && g.controlledId !== b.owner.id) setControlled(g, b.owner);
     return;
   }
-  if (!b.owner || b.owner.side === 'away' || b.owner.isKeeper) {
-    const current = controlled(g);
-    if (!current || (g.possessionSide !== 'home' && b.owner && b.owner.side === 'away')) {
+  if (b.owner && b.owner.side === 'away') {
+    // Auto-pick the nearest defender once on a turnover, then respect manual Q switches.
+    if (g.autoDefenderFor !== b.owner.id) {
+      g.autoDefenderFor = b.owner.id;
       const nearest = g.players.filter(p => p.side === 'home').sort((a, c) => dist(a, b) - dist(c, b))[0];
       if (nearest) setControlled(g, nearest);
     }
+    return;
   }
+  // Loose ball or our keeper has it: keep the player's current choice.
 }
 
 /* ------------------------------------------------------------------ input */
@@ -302,6 +307,7 @@ function performShot(g, p, power, tx, ty, ai = false) {
 }
 function performPass(g, p, target = null, power = .72) {
   if (g.ball.owner !== p || p.stun > 0) return;
+  g.charging = false; g.charge = 0;
   const mate = target || teammateOf(g, p);
   if (!mate) return;
   const lead = clamp(dist(p, mate) / 600, .1, 1);
@@ -345,6 +351,7 @@ const TRICKS = [
 function startTrick(g, p) {
   if (g.ball.owner !== p || g.phase !== 'play' || g.trick) return;
   if (p.trickCooldown > 0) { addFloater(g, p.x, p.y - 38, 'CATCH YOUR BREATH', '#8c969f', .7); return; }
+  g.charging = false; g.charge = 0;
   const template = pick(TRICKS);
   g.trick = { ...template, seq: [...template.seq], idx: 0, time: 1.9, maxTime: 1.9, owner: p };
   Sound.tone(720, .06, 'triangle', .025);
@@ -418,6 +425,7 @@ function trickFail(g, reason = 'MISSED') {
 }
 function tackle(g, p) {
   if (p.stun > 0 || p.tackleCooldown > 0 || p.slide > 0) return;
+  g.charging = false; g.charge = 0;
   p.slide = .32;
   p.tackleCooldown = .9;
   const dir = g.ball.owner && g.ball.owner.side !== p.side ? Math.atan2(g.ball.owner.y - p.y, g.ball.owner.x - p.x) : p.facing;
@@ -509,6 +517,8 @@ function updateGame(g, dt) {
   updateBall(g, dt);
   updateControlled(g);
   updateEffects(g, dt);
+  g.comboTimer = Math.max(0, g.comboTimer - dt);
+  if (g.comboTimer === 0 && g.combo > 0) g.combo = 0;
   updateHUD(g);
 }
 
@@ -812,7 +822,7 @@ function updateBall(g, dt) {
   }
   if (b.shot) b.shot.time += dt;
 
-  if (!b.shot?.resolved) collidePosts(g, b);
+  if (b.shot) collidePosts(g, b);
   for (const p of g.players) {
     if (p === b.lastTouch && b.noPickup > 0) continue;
     const d = Math.hypot(b.x - p.x, b.y - p.y);
@@ -943,6 +953,7 @@ function resolveShotVsKeeper(g, b) {
 
 function setBallOwner(g, p, fromKeeper = false) {
   const b = g.ball;
+  g.charging = false; g.charge = 0;
   const previousSide = b.owner?.side;
   b.owner = p;
   b.lastTouch = p;
@@ -1034,7 +1045,7 @@ function scoreGoal(g, side) {
   g.phase = 'goal'; g.phaseTimer = 2.65;
   g.score[side]++;
   g.shake = 9; g.flash = 1; g.flashColor = side === 'home' ? '#c9ff3f' : '#ff4058';
-  g.kickoffSide = side === 'home' ? 'away' : 'home';
+  g.kickoffSide = g.mode === 'freestyle' ? 'home' : (side === 'home' ? 'away' : 'home');
   g.charging = false; g.charge = 0; g.trick = null;
   $('#trickHud').classList.remove('is-active');
   Sound.goal();
@@ -1149,7 +1160,7 @@ function updateHUD(g) {
   $('#matchClock').textContent = `${mm}:${ss}`;
   $('#homeScore').textContent = g.score.home;
   $('#awayScore').textContent = g.score.away;
-  $('#clockLabel').textContent = g.golden ? 'GOLDEN GOAL' : g.mode === 'freestyle' ? 'STYLE SESSION' : '1ST HALF';
+  $('#clockLabel').textContent = g.golden ? 'GOLDEN GOAL' : g.mode === 'freestyle' ? 'STYLE SESSION' : 'MATCH';
   $('#hudMode').textContent = g.cfg.label;
   $('#comboValue').textContent = g.combo;
   $('#stylePoints').textContent = fmt(g.style);
@@ -1161,8 +1172,6 @@ function updateHUD(g) {
     $('#chargeFill').style.width = `${pct}%`;
     $('#chargeKind').textContent = g.charge > .78 ? 'POWER STRIKE' : g.charge > .35 ? 'DRIVEN SHOT' : 'FINESSE';
   }
-  if (g.comboTimer > 0) g.comboTimer = Math.max(0, g.comboTimer - (1 / 60));
-  if (g.comboTimer === 0 && g.combo > 0) g.combo = 0;
 }
 
 /* ------------------------------------------------------------------ effects */
@@ -1799,6 +1808,7 @@ document.addEventListener('click', e => {
   if (nav) {
     const target = nav.dataset.nav;
     if (target === 'ranked') { toast(`<b>${rankFor(save.rp).label}</b> · ${fmt(save.rp)} RP. Queue ranked from the hub.`); return; }
+    if (nav.dataset.char) { save.selectedChar = nav.dataset.char; persist(); }
     if (G) quitGame();
     setScreen(target);
     return;
@@ -1807,6 +1817,7 @@ document.addEventListener('click', e => {
 $('#soundToggle').addEventListener('click', () => {
   save.muted = !save.muted; Sound.enabled = !save.muted; persist();
   $('#soundToggle').classList.toggle('muted', save.muted);
+  $('#muteGame').textContent = save.muted ? '✕' : '♪';
   if (!save.muted) { Sound.init(); Sound.ui(); }
 });
 $('#muteGame')?.addEventListener('click', () => {

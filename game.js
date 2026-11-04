@@ -667,10 +667,7 @@ function renderCrates() {
 }
 function cratePool(type) {
   const cfg = CRATE_TYPES[type];
-  const rarities = cfg.pool;
-  let pool = ITEMS.filter(i => rarities.includes(i.rarity) && !owned(i.id));
-  if (!pool.length) pool = ITEMS.filter(i => rarities.includes(i.rarity));
-  return { cfg, pool };
+  return { cfg, pool: ITEMS.filter(i => cfg.pool.includes(i.rarity) && !owned(i.id)) };
 }
 function randomCrateItem(type) {
   const { cfg, pool } = cratePool(type);
@@ -703,7 +700,7 @@ function openCrate(type, free = false) {
   $('#openResult').innerHTML = '';
   const reel = $('#openReel');
   const previews = [];
-  for (let i = 0; i < 3; i++) previews.push(randomCrateItem(type) || ITEMS[0]);
+  for (let i = 0; i < 3; i++) previews.push(randomCrateItem(type) || pick(ITEMS.filter(item => cfg.pool.includes(item.rarity))));
   reel.innerHTML = previews.map((item, i) => `<div class="reel-card ${i === 1 ? 'reel-active' : ''}">${item ? `<div class="item-art" ${artBg(item)}>${itemArt(item)}</div><div class="item-rarity rarity-${item.rarity}">${RARITY[item.rarity].label}</div>` : ''}</div>`).join('');
   let ticks = 0;
   const spin = setInterval(() => {
@@ -728,7 +725,6 @@ function revealCrate(type, free) {
   if (!item) {
     const refund = free ? 150 : Math.round(CRATE_TYPES[type].price * .55);
     save.tubes += refund;
-    save.owned = ITEMS.map(i => i.id);
     persist(); updateBalances();
     reel.innerHTML = '';
     $('#crateOpenTitle').textContent = 'POOL CLEARED';

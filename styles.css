@@ -651,7 +651,7 @@ kbd{
   .team-block.away>strong{margin:0}
   .match-clock{min-width:60px;padding:0 8px}
   .match-clock b{font-size:15px}
-  .hud-right{gap:4px;padding-top:0}
+  .hud-right{gap:4px;padding-top:0;margin-left:auto}
   .hud-icon{width:32px;height:32px;font-size:12px}
   .hud-bottom{left:10px;right:10px}
   .style-hud{min-width:180px;margin-left:auto}
