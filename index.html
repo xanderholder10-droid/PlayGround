@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EMBERS OF AETHER</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=DM+Sans:wght@500;600;700&display=swap');
+:root{--gold:#d9af61;--cream:#eee5ce;--ink:#181827;--panel:#252533;--red:#a94d55;--cyan:#69b8b2}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#171721;color:var(--cream);font-family:'DM Sans',sans-serif}
+body{background:radial-gradient(circle at 50% 42%,#45405a 0,#292938 38%,#171721 78%)}
+.game{height:100dvh;display:grid;grid-template-rows:72px minmax(0,1fr) 190px;padding:10px 18px 12px;position:relative}
+.game:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+.top{display:grid;grid-template-columns:260px 1fr 260px;align-items:center;z-index:2}.opponent,.player{display:flex;align-items:center;gap:10px}.top-avatar{width:54px;height:54px;border:2px solid #9c8052;border-radius:50%;background:linear-gradient(145deg,#73506c,#1e263b);display:grid;place-items:center;font-size:27px;box-shadow:0 5px 18px #0008}.nameplate{font-family:Cinzel;font-size:17px}.health{color:#e7be78;font-weight:800}.mana-row{display:flex;gap:5px;margin-top:6px}.mana{width:12px;height:16px;border-radius:2px;background:#4d728a;border:1px solid #84aebd;transform:skew(-8deg)}.mana.empty{background:#242635;border-color:#555969}.deck-count{font-size:11px;color:#aaa4af;margin-left:4px}.turn-center{text-align:center}.round-name{font-family:Cinzel;font-size:12px;color:#a6a1ad}.end-turn{margin:6px auto 0;border:1px solid #8d7751;background:linear-gradient(#8e7952,#514631);color:#fff0c4;font-family:Cinzel;font-weight:800;border-radius:5px;padding:9px 30px;cursor:pointer;box-shadow:0 4px 12px #0008}.end-turn:disabled{filter:grayscale(.8);opacity:.5}.player{justify-self:end}.board{min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 3px minmax(0,1fr);z-index:1}.battle-row{display:flex;align-items:center;justify-content:center;gap:11px}.divide{height:2px;margin:0 12%;background:linear-gradient(90deg,transparent,#7d725e,transparent);opacity:.5}.unit-slot{width:118px;height:145px;border-radius:8px;position:relative}.card{height:145px;width:118px;border:2px solid #a58c61;border-radius:8px;background:linear-gradient(150deg,#4a4854,#242431);position:relative;padding:5px;box-shadow:0 7px 16px #0009;cursor:pointer;transition:.18s;overflow:hidden}.card:hover{transform:translateY(-8px);z-index:5}.card.selected{outline:3px solid #eac778;transform:translateY(-9px)}.card.targetable{outline:2px solid #ef7777;box-shadow:0 0 18px #d84f5c}.card-name{height:20px;font-family:Cinzel;font-size:9px;text-align:center;color:#f2dfb1;line-height:20px}.art{height:75px;border:1px solid #181824;border-radius:3px;display:grid;place-items:center;font-size:48px;background:radial-gradient(circle at 50%,var(--glow,#a9a),#2b2b39 65%,#181820);text-shadow:0 5px 8px #000}.card-cost{position:absolute;top:-7px;left:-7px;width:27px;height:27px;border-radius:50%;background:#4d86a0;border:2px solid #bcd1cf;display:grid;place-items:center;color:white;font-weight:800}.card-type{height:19px;font-size:8px;text-transform:uppercase;text-align:center;color:#c9bca0;padding-top:4px}.stats{position:absolute;bottom:-5px;width:calc(100% - 10px);display:flex;justify-content:space-between}.stat{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:white;border:1px solid #bca76e}.atk{background:#8d4e45}.hp{background:#4f7e66}.spell .art{background:radial-gradient(circle,#8b7060,#322735)}.enemy-board .card:not(.dead){cursor:crosshair}.empty-slot{border:1px dashed #77736a66;border-radius:8px;width:118px;height:145px}.bottom{display:grid;grid-template-columns:180px 1fr 180px;align-items:end;z-index:4}.hand{display:flex;justify-content:center;align-items:flex-end;gap:-4px;height:176px}.hand .card{width:124px;height:170px;flex:0 0 124px;margin:0 -3px}.hand .art{height:92px}.hand .card-name{font-size:10px}.hand-zone{overflow:visible}.log{align-self:center;background:#171722cc;border:1px solid #635b4e;border-radius:5px;padding:10px 12px;max-height:74px;overflow:hidden;font-size:11px;color:#bbb3a6}.log strong{color:#dcbf7e}.deck{justify-self:end;width:76px;height:108px;border:3px solid #82724f;border-radius:8px;background:repeating-linear-gradient(135deg,#343044 0,#343044 7px,#292838 8px,#292838 12px);display:grid;place-items:center;align-self:end;box-shadow:0 6px 15px #0009}.deck:after{content:"✦";font-size:26px;color:#bda568}.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#181822e8;border:1px solid #94815c;border-radius:7px;padding:12px 18px;font-family:Cinzel;z-index:20;opacity:0;pointer-events:none}.toast.show{animation:toast 1.5s}@keyframes toast{0%,100%{opacity:0}15%,75%{opacity:1}}.taunt{position:absolute;top:-8px;right:-5px;width:19px;height:19px;border-radius:50%;background:#c0a268;color:#1c1b24;text-align:center;font-size:12px}.exhausted{filter:saturate(.35);opacity:.72}.damaged{animation:hit .35s}@keyframes hit{50%{transform:translateX(6px);filter:brightness(2)}}
+.modal{position:absolute;inset:0;background:#111119c9;z-index:30;display:none;place-items:center}.modal.show{display:grid}.modal-box{width:min(430px,90vw);border:1px solid #9b855b;background:linear-gradient(145deg,#363244,#1e1e29);border-radius:10px;padding:28px;text-align:center;box-shadow:0 20px 60px #000}.modal-box h1{font-family:Cinzel;color:#eccd89;margin:8px}.modal-box p{color:#b9b3a9}.modal-box button{border:1px solid #9b855b;background:#68604d;color:#fff4d4;border-radius:5px;padding:11px 22px;font-family:Cinzel;font-weight:800;cursor:pointer}
+@media(max-width:700px){.game{padding:6px 5px 8px;grid-template-rows:58px minmax(0,1fr) 150px}.top{grid-template-columns:145px 1fr 145px}.top-avatar{width:43px;height:43px}.nameplate{font-size:12px}.mana-row{gap:2px}.mana{width:8px;height:12px}.end-turn{padding:7px 10px;font-size:10px}.unit-slot,.card,.empty-slot{width:76px}.unit-slot,.card{height:112px}.battle-row{gap:4px}.art{height:54px;font-size:32px}.card-name{height:17px;font-size:7px}.card-type{height:15px;font-size:6px}.stat{width:20px;height:20px;font-size:9px}.hand{height:145px}.hand .card{width:78px;height:130px;flex-basis:78px;margin:0 -4px}.hand .art{height:63px}.hand .card-name{font-size:7px}.bottom{grid-template-columns:70px 1fr 70px}.deck{width:54px;height:78px}.log{display:none}.turn-center{transform:scale(.9)}}
+</style>
+</head>
+<body><main class="game">
+<header class="top">
+<div class="opponent"><div class="top-avatar">🧙</div><div><div class="nameplate">MORGATH <span class="health" id="eHealth">30</span></div><div class="mana-row" id="eMana"></div></div></div>
+<div class="turn-center"><div class="round-name" id="roundName">YOUR TURN · ROUND 1</div><button class="end-turn" id="endTurn">END TURN</button></div>
+<div class="player"><div><div class="nameplate" style="text-align:right">YOU <span class="health" id="pHealth">30</span></div><div class="mana-row" id="pMana"></div></div><div class="top-avatar">🦁</div></div>
+</header>
+<section class="board"><div class="battle-row enemy-board" id="enemyBoard"></div><div class="divide"></div><div class="battle-row" id="playerBoard"></div></section>
+<footer class="bottom"><div class="log" id="log"><strong>Embers of Aether</strong><br>Your turn begins.</div><div class="hand hand-zone" id="hand"></div><div class="deck" id="deck"></div></footer>
+<div class="toast" id="toast">Choose a target</div>
+<div class="modal" id="modal"><div class="modal-box"><div style="font-size:42px" id="endIcon">🏆</div><h1 id="endTitle">VICTORY</h1><p id="endText">Morgath has fallen.</p><button onclick="location.reload()">PLAY AGAIN</button></div></div>
+</main>
+<script>
+const library=[
+{name:'Mossback',cost:2,atk:2,hp:3,art:'🐻',glow:'#7e9d67',taunt:true},{name:'Ash Fox',cost:1,atk:2,hp:1,art:'🦊',glow:'#bd7a55'},
+{name:'Dawn Drake',cost:3,atk:4,hp:3,art:'🐲',glow:'#d79a62'}, {name:'Moon Wolf',cost:2,atk:3,hp:2,art:'🐺',glow:'#7d91b1'},
+{name:'Thorn Sprite',cost:1,atk:1,hp:2,art:'🧚',glow:'#77a872'}, {name:'Stone Golem',cost:4,atk:3,hp:6,art:'🗿',glow:'#9a8c72',taunt:true},
+{name:'Storm Eagle',cost:3,atk:3,hp:2,art:'🦅',glow:'#9da2c4'}, {name:'Ember Wyrm',cost:5,atk:5,hp:5,art:'🐉',glow:'#bc4d42'},
+{name:'Sea Nymph',cost:2,atk:1,hp:4,art:'🧜',glow:'#73aaa4'}, {name:'Shade Cat',cost:2,atk:3,hp:1,art:'🐈‍⬛',glow:'#766a96'},
+{name:'Cinder',cost:1,atk:1,hp:1,art:'🔥',glow:'#b94f38'}, {name:'Forest Titan',cost:6,atk:6,hp:7,art:'🦣',glow:'#83905d',taunt:true}
+];
+const state={round:1,turn:'p',pHealth:30,eHealth:30,pMana:1,maxPMana:1,eMana:1,maxEMana:1,hand:[],deck:[],pBoard:[],eBoard:[],selected:null,acting:false};
+function uid(){return Math.random().toString(36).slice(2)}
+function makeCard(base){return {...base,id:uid(),summonRound:state.round,exhausted:true}}
+function shuffle(a){return a.sort(()=>Math.random-.5)}
+state.deck=shuffle(library.map(makeCard)); state.hand=[state.deck.pop(),state.deck.pop(),state.deck.pop(),state.deck.pop()];
+const $=s=>document.querySelector(s);
+function cardHTML(c,owner){let exhausted=c.exhausted?'exhausted':'';return `<div class="card ${exhausted}" data-id="${c.id}" style="--glow:${c.glow}"><div class="card-cost">${c.cost}</div><div class="card-name">${c.name}</div><div class="art">${c.art}</div><div class="card-type">Creature${c.taunt?' · Guardian':''}</div><div class="stats"><span class="stat atk">${c.atk}</span><span class="stat hp">${c.hp}</span></div>${c.taunt?'<span class="taunt">◆</span>':''}</div>`}
+function render(){
+ $('#pHealth').textContent=state.pHealth;$('#eHealth').textContent=state.eHealth;
+ for(let side of ['p','e']){let mana=$('#'+side+'Mana');mana.innerHTML='';let max=side==='p'?state.maxPMana:state.maxEMana,cur=side==='p'?state.pMana:state.eMana;for(let i=0;i<10;i++)mana.innerHTML+=`<i class="mana ${i>=cur?'empty':''}"></i>`;if(side==='p')mana.innerHTML+=`<span class="deck-count">${state.pMana}/${state.maxPMana} MANA</span>`}
+ $('#enemyBoard').innerHTML=(state.eBoard.map(c=>`<div class="unit-slot">${cardHTML(c,'e')}</div>`).join(''))+'<div></div>'.repeat(Math.max(0,5-state.eBoard.length));
+ $('#playerBoard').innerHTML=(state.pBoard.map(c=>`<div class="unit-slot">${cardHTML(c,'p')}</div>`).join(''))+'<div></div>'.repeat(Math.max(0,5-state.pBoard.length));
+ $('#hand').innerHTML=state.hand.map(c=>`<div class="unit-slot">${cardHTML(c,'p')}</div>`).join('');
+ document.queryAll=$$;
+ if(state.selected){document.querySelectorAll(`.hand [data-id="${state.selected.id}"]`).forEach(x=>x.classList.add('selected'))}
+ $('#roundName').textContent=(state.turn==='p'?'YOUR TURN':'MORGATH’S TURN')+' · ROUND '+state.round;
+ $('#endTurn').disabled=state.turn==='p'?false:true;
+ bindCards();
+}
+function bindCards(){
+ document.queryAll=document.querySelectorAll;
+ document.querySelectorAll('#hand .card').forEach(el=>el.onclick=()=>{if(state.turn!=='p'||state.acting)return;let c=state.hand.find(x=>x.id===el.dataset.id);if(!c)return;if(c.cost>state.pMana){toast('Not enough mana');return}if(state.pBoard.length>=5){toast('Board is full');return}state.pMana-=c.cost;state.pBoard.push(makeCard(c));state.hand=state.hand.filter(x=>x.id!==c.id);addLog(`You summon <strong>${c.name}</strong>.`);render()});
+ document.querySelectorAll('#playerBoard .card').forEach(el=>el.onclick=()=>{if(state.turn!=='p'||state.acting)return;let c=state.pBoard.find(x=>x.id===el.dataset.id);if(!c||c.exhausted)return;if(c.summonRound===state.round)return toast('Summoning sickness');state.selected=c;render();toast('Choose an enemy')});
+ document.querySelectorAll('#enemyBoard .card').forEach(el=>el.onclick=()=>{if(state.turn!=='p'||!state.selected||state.acting)return;let enemy=state.eBoard.find(x=>x.id===el.dataset.id);if(enemy)attack(state.selected,enemy,'p','e')});
+}
+function toast(t){let e=$('#toast');e.textContent=t;e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
+function addLog(t){$('#log').innerHTML=`<strong>Embers of Aether</strong><br>${t}`}
+function attack(a,b,sideA,sideB){if(sideA==='p'&&!a.exhausted&&a.summonRound<state.round){ }else if(sideA==='p')return;
+a.exhausted=true;b.hp-=a.atk;a.hp-=b.atk;if(b.hp<=0)state.eBoard=state.eBoard.filter(x=>x.id!==b.id);if(a.hp<=0)state.pBoard=state.pBoard.filter(x=>x.id!==a.id);state.selected=null;addLog(`<strong>${a.name}</strong> strikes ${b.name}!`);render();if(state.eBoard.length===0&&b.hp>0){}checkWin();}
+function directAttack(a){a.exhausted=true;state.eHealth-=a.atk;addLog(`<strong>${a.name}</strong> attacks Morgath!`);state.selected=null;render();checkWin()}
+function checkWin(){if(state.eHealth<=0)return endGame(true);if(state.pHealth<=0)return endGame(false)}
+function endGame(win){$('#modal').classList.add('show');$('#endIcon').textContent=win?'🏆':'☠';$('#endTitle').textContent=win?'VICTORY':'DEFEAT';$('#endText').textContent=win?'Morgath has fallen.':'The Aether has gone dark.'}
+$('#enemyBoard');
+// Allow click through board to hit hero
+$('#enemyBoard').addEventListener('click',e=>{if(!state.selected)return;let taunt=state.eBoard.find(x=>x.taunt);if(taunt){toast('Guardian must be defeated first');return}directAttack(state.selected)});
+function enemyTurn(){if(state.turn!== 'e')return;state.acting=true;$('#endTurn').disabled=true;let i=0;setTimeout(function act(){if(i>=2 && state.eBoard.length<5){let available=library.filter(c=>c.cost<=state.eMana);if(available.length){let c=makeCard(available[Math.floor(Math.random()*available.length)]);c.exhausted=true;c.summonRound=state.round;state.eMana-=c.cost;state.eBoard.push(c);addLog(`Morgath summons <strong>${c.name}</strong>.`);render()}i++;if(i<4)return setTimeout(act,700)}else{i++;if(i<6)return setTimeout(act,650)}enemyAttack()},200)}
+function enemyAttack(){let attackers=[...state.eBoard];for(let c of attackers){if(!c.exhausted){continue}c.exhausted=false;setTimeout(()=>{},0)}for(let c of state.eBoard){c.exhausted=false}let order=[...state.eBoard];let n=0;function strike(){if(n>=order.length||state.pHealth<=0)return setTimeout(()=>endTurn(),600);let c=order[n++];let targets=state.pBoard.filter(x=>x.taunt);let target=targets[0]||state.pBoard[0];if(target){target.hp-=c.atk;c.hp-=target.atk;if(target.hp<=0)state.pBoard=state.pBoard.filter(x=>x.id!==target.id);if(c.hp<=0)state.eBoard=state.eBoard.filter(x=>x.id!==c.id);addLog(`<strong>${c.name}</strong> attacks ${target.name}.`)}else{state.pHealth-=c.atk;addLog(`<strong>${c.name}</strong> attacks you.`)}render();checkWin();setTimeout(strike,650)}strike();}
+function endTurn(){if(state.turn==='p'){state.turn='e';state.acting=true;state.selected=null;state.round++;state.maxEMana=Math.min(10,state.round);state.eMana=state.maxEMana;state.round--;render();enemyTurn()}else{state.turn='p';state.acting=false;state.round++;state.maxPMana=Math.min(10,state.round);state.pMana=state.maxPMana;state.pBoard.forEach(c=>c.exhausted=false);if(state.deck.length){state.hand.push(state.deck.pop())}if(state.hand.length>7)state.hand.pop();render();addLog('Your turn begins.')}}
+$('#endTurn').onclick=()=>{if(state.turn==='p')endTurn()};
+render();
+</script></body></html>
